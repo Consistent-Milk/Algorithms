@@ -1,0 +1,106 @@
+Statement: Given a sorted array and an element, implement a function to find whether the element is in the array.
+
+Algorithm Explanation: 
+
+The algorithm implemented here is an iterative algorithm. An example of how it works is as below:
+
+Example 1:
+                        Sorted Array:  -4 -3 -1 0 4 6 13
+                        Element: -1 
+
+                        Iteration 1: Low = 0, High = 6 (Length of array - 1)
+
+                                    Current Array: -4 -3 -1 0 4 6 13
+
+                                    Mid = Low + (High - Low)//2 = 3 
+
+                                    Array[Mid] = Array[3] = 0
+
+                                    Element = -1 < Array[Mid] = 0
+
+                                    Set -> High = Mid - 1 = 3 -1 = 2
+                                           Low = Low = 0
+
+                                    Current Array: -4 -3 -1 (From index Low = 0 to index High = 2)
+
+                        Iteration 2: Low = 0, High = 2
+                                     
+                                    Current Array: -4 -3 -1
+
+                                    Mid = Low + (High - Low)//2 = 1
+
+                                    Array[Mid] = Array[1] = -3
+
+                                    Element = -1 > Array[Mid] = -3
+
+                                    Set -> Low = Mid + 1 = 0 + 1 = 1
+                                           High = High = 2
+
+                                    Current Array: -3 -1 (From index Low = 1 to index High = 2)
+
+                        Iteration 3: Low = 1, High = 2
+
+                                    Current Array: -3 -1
+
+                                    Mid = Low + (High - Low)//2 = 1 + 1//2 = 1 + 0 = 1
+
+                                    Array[Mid] = Array[1] = -1
+
+                                    Element = -1 = Array[Mid]
+
+                                    Element Found in array, terminate Algorithm.
+
+
+Example 1:
+                        Sorted Array:  -4 -3 -2 0 4 6 13
+                        Element: -1 
+
+                        Iteration 1: Low = 0, High = 6 (Length of array - 1)
+
+                                    Current Array: -4 -3 -2 0 4 6 13
+
+                                    Mid = Low + (High - Low)//2 = 3 
+
+                                    Array[Mid] = Array[3] = 0
+
+                                    Element = -1 < Array[Mid] = 0
+
+                                    Set -> High = Mid - 1 = 3 -1 = 2
+                                           Low = Low = 0
+
+                                    Current Array: -4 -3 -2 (From index Low = 0 to index High = 2)
+
+                        Iteration 2: Low = 0, High = 2
+                                     
+                                    Current Array: -4 -3 -2
+
+                                    Mid = Low + (High - Low)//2 = 1
+
+                                    Array[Mid] = Array[1] = -3
+
+                                    Element = -1 > Array[Mid] = -3
+
+                                    Set -> Low = Mid + 1 = 0 + 1 = 1
+                                           High = High = 2
+
+                                    Current Array: -3 -2 (From index Low = 1 to index High = 2)
+
+                        Iteration 3: Low = 1, High = 2
+
+                                    Current Array: -3 -2
+
+                                    Mid = Low + (High - Low)//2 = 1 + 1//2 = 1 + 0 = 1
+
+                                    Array[Mid] = Array[1] = -2
+
+                                    Element = -1 > Array[Mid] = -2
+
+                                    Set -> Low = Mid + 1 = 1 + 1 = 2
+                                           High = High = 2
+                                    
+                                    Current Array: -2 (From index Low = 2 to index High = 2)
+
+                                    Low = High, but Array[Mid] = -2 != Element = -1 
+
+                                    Terminate Algorithm, the element is not in the array.
+                        
