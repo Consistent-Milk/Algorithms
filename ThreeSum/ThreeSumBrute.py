@@ -17,7 +17,7 @@ def main():
         f"The total count of triples that sum to zero in the given array is: {zero_triples_counter}")
     print(f"The list of triplets that sum to zero is {zero_triples_list}")
 
-    print("Timer for actual Brute force algorithm with triplet list:")
+    print("Timer for actual Brute force algorithm without triplet list:")
     print("Timer:\t", timeit.timeit(
         f"{algorithm_instance_2.count_with_timer()}"))
 
