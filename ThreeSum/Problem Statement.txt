@@ -1,0 +1,1 @@
+Statement: Given N distinct integers, how many triples sum to exactly zero?

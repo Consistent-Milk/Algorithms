@@ -1,0 +1,1 @@
+The algorithms are part of the free course provided through Coursera by Princeton University. The algorithms implemented in the course are studied using Java, but this repository aims to produce similar Python implementations of the algorithms so that anyone taking the course can check the algorithms in Python.
