@@ -17,7 +17,8 @@ def main():
     # Important step, the array must be sorted before binary search is used.
     array = sorted(array)
 
-    element = int(input('Enter an element to search for in the sorted array: '))
+    element = int(
+        input('Enter an element to search for in the sorted array: '))
 
     result = binary_search(array, element, 0, len(array)-1)
 
