@@ -28,7 +28,7 @@ class QuickFind:
             else:
                 return False 
         else:
-            raise ValueError(f"The value of p and q must be in the interval [0,{n}]")
+            raise ValueError(f"The value of p and q must be and integer in the interval [0,{n}]")
 
     def union(self, p: int, q: int) -> None:
         n = self.number_of_elements - 1
@@ -40,7 +40,7 @@ class QuickFind:
                 if (self.id_array[i] == pid):
                     self.id_array[i] = qid
         else:
-            raise ValueError(f"The value of p and q must be in the interval [0,{n}]")
+            raise ValueError(f"The value of p and q must be an integer in the interval [0,{n}]")
 
 if __name__ == "__main__":
     main()
