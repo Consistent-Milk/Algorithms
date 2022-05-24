@@ -22,7 +22,7 @@ def main():
         f"{algorithm_instance_2.count_with_timer()}"))
 
 
-class ThreeSumBrute():
+class ThreeSumBrute:
 
     def __init__(self, data_array: list) -> None:
         self.data_array = data_array
@@ -41,7 +41,7 @@ class ThreeSumBrute():
                         triplet_list.append([a[i], a[j], a[k]])
         return (count, triplet_list)
 
-    def count_with_timer(self) -> tuple:
+    def count_with_timer(self) -> int:
         a = self.data_array
         n = len(self.data_array)
         count = 0

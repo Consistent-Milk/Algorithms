@@ -1,1 +1,6 @@
 Statement: Given N distinct integers, how many triples sum to exactly zero?
+
+Algorithm Improvements:
+The running time of ThreeSum algorithm can be reduced by replacing the third loop with the binary search
+algorithm. This greatly reduces the number of array accesses necessary and makes the algorithm
+O(N^2*LOG(N)) from O(N^3).
