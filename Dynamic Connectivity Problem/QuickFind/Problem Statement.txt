@@ -1,0 +1,27 @@
+Statement: Implement a class QuickUnion that can initialize an array of length N by assigning each index its own value. Then implement two methods as follows: 
+
+            Initialization:
+                Index: 0 1 2 3 4 5 6
+                Value: 0 1 2 3 4 5 6
+
+    1. connected: This will take two integer inputs p and q as index and check whether they have
+    the same id/value and return a boolean output -
+                    Index: 0 1 2 3 4 5 6
+                   Values: 0 2 2 3 2 5 6
+
+            connected(1,4) -> True 
+            connected(1,6) -> False
+
+    2. union: This will take two integer inputs p and q as index and change id/value of all
+    indices that has the id/value of p to the id/value of q - 
+
+                    Index: 0 1 2 3 4 5 6
+                    Value: 0 1 2 3 4 5 6
+            
+            union(1,2) -> 
+                    Index: 0 1 2 3 4 5 6
+                    Value: 0 2 2 3 4 5 6
+            
+            union(1,4) ->
+                    Index: 0 1 2 3 4 5 6
+                    Value: 0 4 4 3 4 6 6    (*Note that both the value of index 1 and 2 change)
