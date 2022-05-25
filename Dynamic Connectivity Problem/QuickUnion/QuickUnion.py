@@ -1,16 +1,16 @@
 # Fixed bugs with raising proper value errors
 
 def main():
-    n = int(input('Input a positive integer n for the length of the initial array: '))
-    id_array = QuickUnion(n)
+    n = 6
+    QuickUnion_instance = QuickUnion(n)
 
-    print(id_array.id_array)
-    print(f"The current root of 4 is: {id_array.root(4)}")
-    id_array.union(4, 5)
-    print(f"The changed root of 4 is: {id_array.root(4)}")
-    print(f"The current root of 3 is: {id_array.root(3)}")
-    id_array.union(3, 4)
-    print(f"The changed root of 3 is: {id_array.root(3)}")
+    print(QuickUnion_instance.id_array)
+    print(f"The current root of 4 is: {QuickUnion_instance.root(4)}")
+    QuickUnion_instance.union(4, 5)
+    print(f"The changed root of 4 is: {QuickUnion_instance.root(4)}")
+    print(f"The current root of 3 is: {QuickUnion_instance.root(3)}")
+    QuickUnion_instance.union(3, 4)
+    print(f"The changed root of 3 is: {QuickUnion_instance.root(3)}")
 
 
 class QuickUnion():

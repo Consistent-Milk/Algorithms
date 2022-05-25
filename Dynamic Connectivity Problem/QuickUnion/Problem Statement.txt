@@ -18,6 +18,4 @@ Statement: Implement a class QuickUnion that can initialize an array of length N
                 After using the method union (1,2) the array should change to:
                         Index: 0 1 2 3 4 5 6
                        Values: 0 2 2 3 4 5 6
-                Making 2 the root of the element 1. 
-         
-            
+                Making 2 the root of the element 1.          
