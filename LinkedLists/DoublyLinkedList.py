@@ -1,20 +1,231 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.previous = None
-        self.next = None
+# Run ( python DoublyLinkedList.py -v ) to get detailed doctest report. 
 
-    def __str__(self):
+from collections.abc import Iterator
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
+
+
+class Node(Generic[T]):
+
+    def __init__(self, data: T):
+        self.data = data
+        self.previous: Node[T] | None = None
+        self.next: Node[T] | None = None
+
+    def __str__(self) -> str:
         return f"{self.data}"
 
 
-class DoublyLinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
+class DoublyLinkedList(Generic[T]):
 
-    def __iter__(self):
+    def __init__(self) -> None:
+        self.head: Node[T] | None = None
+        self.tail: Node[T] | None = None
+
+    def __iter__(self) -> Iterator[T]:
+        """
+        >>> linked_list = DoublyLinkedList()
+        >>> linked_list.insert_at_head('b')
+        >>> linked_list.insert_at_head('a')
+        >>> linked_list.insert_at_tail('c')
+        >>> tuple(linked_list)
+        ('a', 'b', 'c')
+        """
         node = self.head
         while node:
             yield node.data
-            
+            node = node.next
+
+    def __str__(self) -> str:
+        """
+        >>> linked_list = DoublyLinkedList()
+        >>> linked_list.insert_at_tail('a')
+        >>> linked_list.insert_at_tail('b')
+        >>> linked_list.insert_at_tail('c')
+        >>> str(linked_list)
+        'a->b->c'
+        """
+        return "->".join([str(item) for item in self])
+
+    def __len__(self) -> int:
+        """
+        >>> linked_list = DoublyLinkedList()
+        >>> for i in range(0, 5):
+        ...     linked_list.insert_at_nth(i, i + 1)
+        >>> len(linked_list) == 5
+        True
+        """
+        return len(tuple(iter(self)))
+
+    def insert_at_head(self, data: T) -> None:
+        self.insert_at_nth(0, data)
+
+    def insert_at_tail(self, data: T) -> None:
+        self.insert_at_nth(len(self), data)
+
+    def insert_at_nth(self, index: int, data: T) -> None:
+        """
+        >>> linked_list = DoublyLinkedList()
+        >>> linked_list.insert_at_nth(-1, 666)
+        Traceback (most recent call last):
+        ....
+        IndexError: Index out of range.
+        >>> linked_list.insert_at_nth(1, 666)
+        Traceback (most recent call last):
+        ....
+        IndexError: Index out of range.
+        >>> linked_list.insert_at_nth(0, 2)
+        >>> linked_list.insert_at_nth(0, 1)
+        >>> linked_list.insert_at_nth(2, 4)
+        >>> linked_list.insert_at_nth(2, 3)
+        >>> str(linked_list)
+        '1->2->3->4'
+        >>> linked_list.insert_at_nth(5, 5)
+        Traceback (most recent call last):
+        ....
+        IndexError: Index out of range.
+        """
+        if not 0 <= index <= len(self):
+            raise IndexError("Index out of range.")
+        new_node = Node(data)
+        if self.head is None:
+            self.head = self.tail = new_node
+        elif index == 0:
+            self.head.previous = new_node
+            new_node.next = self.head
+            self.head = new_node
+        elif index == len(self):
+            self.tail.next = new_node
+            new_node.previous = self.tail
+            self.tail = new_node
+        else:
+            temp = self.head
+            for i in range(0, index):
+                temp = temp.next
+            temp.previous.next = new_node
+            new_node.previous = temp.previous
+            new_node.next = temp
+            temp.previous = new_node
+
+    def delete_head(self) -> T:
+        return self.delete_at_nth(0)
+
+    def delete_tail(self) -> T:
+        return self.delete_at_nth(len(self) - 1)
+
+    def delete_at_nth(self, index: int) -> T:
+        """
+        >>> linked_list = DoublyLinkedList()
+        >>> linked_list.delete_at_nth(0)
+        Traceback (most recent call last):
+        ....
+        IndexError: Index out of range.
+        >>> for i in range(0, 5):
+        ...     linked_list.insert_at_nth(i, i + 1)
+        >>> linked_list.delete_at_nth(0) == 1
+        True
+        >>> linked_list.delete_at_nth(3) == 5
+        True
+        >>> linked_list.delete_at_nth(1) == 3
+        True
+        >>> str(linked_list)
+        '2->4'
+        >>> linked_list.delete_at_nth(2)
+        Traceback (most recent call last):
+        ....
+        IndexError: Index out of range.
+        """
+        if not 0 <= index <= len(self) - 1:
+            raise IndexError("Index out of range.")
+        delete_node = self.head
+        if len(self) == 1:
+            self.head = self.tail = None
+        elif index == 0:
+            self.head = self.head.next
+            self.head.previous = None
+        elif index == len(self) - 1:
+            delete_node = self.tail
+            self.tail = self.tail.previous
+            self.tail.next = None
+        else:
+            temp = self.head
+            for i in range(0, index):
+                temp = temp.next
+            delete_node = temp
+            temp.next.previous = temp.previous
+            temp.previous.next = temp.next
+        return delete_node.data
+
+    def delete(self, data: T) -> str:
+        current = self.head
+
+        while current.data != data:
+            if current.next:
+                current = current.next
+            else:
+                return f"No match found for {data}"
+
+        if current == self.head:
+            self.delete_head()
+
+        elif current == self.tail:
+            self.delete_tail()
+
+        else:
+            current.previous.next = current.next
+            current.next.previous = current.previous
+        return data
+
+    def is_empty(self):
+        """
+        >>> linked_list = DoublyLinkedList()
+        >>> linked_list.is_empty()
+        True
+        >>> linked_list.insert_at_tail(1)
+        >>> linked_list.is_empty()
+        False
+        """
+        return len(self) == 0
+
+
+def test_doubly_linked_list() -> None:
+    """
+    >>> test_doubly_linked_list()
+    """
+    linked_list = DoublyLinkedList()
+    assert linked_list.is_empty() is True
+    assert str(linked_list) == ""
+
+    try:
+        linked_list.delete_head()
+        assert False  # This should not happen.
+    except IndexError:
+        assert True  # This should happen.
+
+    try:
+        linked_list.delete_tail()
+        assert False  # This should not happen.
+    except IndexError:
+        assert True  # This should happen.
+
+    for i in range(10):
+        assert len(linked_list) == i
+        linked_list.insert_at_nth(i, i + 1)
+    assert str(linked_list) == "->".join(str(i) for i in range(1, 11))
+
+    linked_list.insert_at_head(0)
+    linked_list.insert_at_tail(11)
+    assert str(linked_list) == "->".join(str(i) for i in range(0, 12))
+
+    assert linked_list.delete_head() == 0
+    assert linked_list.delete_at_nth(9) == 10
+    assert linked_list.delete_tail() == 11
+    assert len(linked_list) == 9
+    assert str(linked_list) == "->".join(str(i) for i in range(1, 10))
+
+
+if __name__ == "__main__":
+    from doctest import testmod
+
+    testmod()
