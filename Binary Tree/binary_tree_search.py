@@ -3,6 +3,7 @@ Binary Search Tree Algorithm
 """
 from typing import Generic, TypeVar
 from pprint import pformat
+from typing_extensions import Self
 
 T = TypeVar("T")
 
@@ -20,10 +21,158 @@ class Node(Generic[T]):
         if self.left is None and self.right is None:
             return str(self.value)
 
-        return pformat({"%s" % {self.value}: (self.left, self.right)}, indent=1)
+        return pformat({"%s" % (self.value): (self.left, self.right)}, indent=1)
 
 
 class BinarySearchTree(Generic[T]):
 
-    def __init__(self, root: T) -> None:
-        self.root: T | None = None
+    def __init__(self, root: T = None) -> None:
+        self.root = root
+
+    def __str__(self):
+        return str(self.root)
+
+    def __reassign_nodes(self, node: Node, new_children: Node) -> None:
+        if new_children is not None:
+            new_children.parent = node.parent
+        if node.parent is not None:
+            if self.is_right(node):
+                node.parent.right = new_children
+            else:
+                node.parent.left = new_children
+        else:
+            self.root = new_children
+
+    def is_right(self, node: Node) -> bool:
+        return node == node.parent.right
+
+    def empty(self) -> bool:
+        return self.root is None
+
+    def __insert(self, value: T) -> None:
+        new_node = Node(value, None)
+        if self.empty():
+            self.root = new_node
+        else:
+            parent_node = self.root
+            while True:
+                if value < parent_node.value:
+                    if parent_node.left is None:
+                        parent_node.left = new_node
+                        break
+                    else:
+                        parent_node = parent_node.left
+                else:
+                    if parent_node.right is None:
+                        parent_node.right = new_node
+                        break
+                    else:
+                        parent_node = parent_node.right
+            new_node.parent = parent_node
+
+    def insert(self, *values: T) -> Self:
+        for value in values:
+            self.__insert(value)
+        return self
+
+    def search(self, value: T) -> Node:
+        if self.empty():
+            raise IndexError("Warning: Tree is empty.")
+        else:
+            node = self.root
+            while node is not None and node.value is not value:
+                node = node.left if value < node.value else node.right
+            return node
+
+    def get_max(self, node: Node = None) -> Node:
+        if node is None:
+            node = self.root
+        if not self.empty():
+            while node.right is not None:
+                node = node.right
+        return node
+
+    def get_min(self, node: Node = None) -> Node:
+        if node is None:
+            node = self.root
+        if not self.empty():
+            node = self.root
+            while node.left is not None:
+                node = node.left
+        return node
+
+    def remove(self, value: T) -> None:
+        node = self.search(value)
+        if node is not None:
+            if node.left is None and node.right is None:
+                self.__reassign_nodes(node, None)
+            elif node.left is None:
+                self.__reassign_nodes(node, node.right)
+            elif node.right is None:
+                self.__reassign_nodes(node, node.left)
+            else:
+                tmp_node = self.get_max(node.left)
+                self.remove(tmp_node.value)
+                node.value = (tmp_node.value)
+
+    def preorder_traverse(self, node: Node) -> Node:
+        if node is not None:
+            yield node
+            yield from self.preorder_traverse(node.left)
+            yield from self.preorder_traverse(node.right)
+
+    def traversal_tree(self, traversal_function=None) -> Node:
+        if traversal_function is None:
+            return self.preorder_traverse(self.root)
+        else:
+            return traversal_function(self.root)
+
+    def inorder(self, arr: list, node: Node) -> None:
+        if node:
+            self.inorder(arr, node.left)
+            arr.append(node.value)
+            self.inorder(arr, node.right)
+
+    def find_kth_smallest(self, k: int, node: Node) -> int:
+        arr: list = []
+        self.inorder(arr, node)
+        return arr[k-1]
+
+
+def postorder(curr_node: Node) -> list:
+    node_list = list()
+    if curr_node is not None:
+        node_list = postorder(curr_node.left) + postorder(curr_node.right)
+    return node_list
+
+
+def binary_search_tree():
+    testlist = (8, 3, 6, 1, 10, 14, 13, 4, 7)
+    t = BinarySearchTree()
+    for i in testlist:
+        t.insert(i)
+
+    # Prints all the elements of the list in order traversal
+    print(t)
+
+    if t.search(6) is not None:
+        print("The value 6 exists")
+    else:
+        print("The value 6 doesn't exist")
+
+    if t.search(-1) is not None:
+        print("The value -1 exists")
+    else:
+        print("The value -1 doesn't exist")
+
+    if not t.empty():
+        print("Max Value: ", t.get_max().value)
+        print("Min Value: ", t.get_min().value)
+
+    for i in testlist:
+        t.remove(i)
+        print(t)
+
+
+if __name__ == "__main__":
+    binary_search_tree()
